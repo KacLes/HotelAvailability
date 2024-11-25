@@ -23,13 +23,9 @@ namespace HotelAvailability
         private void readBookings(string filename)
         {
             string jsonString = File.ReadAllText(filename);
-            //List<Booking> bookings = JsonSerializer.Deserialize<List<Booking>>(jsonString)!;
-
             var options = new JsonSerializerOptions();
             options.Converters.Add(new CustomDateOnlyConverter());
             List<Booking> bookings = JsonSerializer.Deserialize<List<Booking>>(jsonString, options)!;
-
-           
 
             bookingList.AddRange(bookings);
         }
@@ -41,6 +37,9 @@ namespace HotelAvailability
             hotelList.AddRange(hotels);
         }
 
+        /// <summary>
+        /// Counts number of already existing bookings that overlap with the tested booking
+        /// </summary>
         public int countBookingConflicts(Booking booking)
         {
             return bookingList.Where(b => (b.hotelId == booking.hotelId && b.roomType == booking.roomType)).
@@ -48,6 +47,9 @@ namespace HotelAvailability
                 Where(b => b.departure.CompareTo(booking.arrival) >= 0).Count();
         }
 
+        /// <summary>
+        /// Counts number of rooms with matching room type and hotel id for the given booking
+        /// </summary>
         public int countMatchingRooms(Booking booking)
         {
             Hotel hotel = hotelList.Find(hotel => hotel.id == booking.hotelId);
@@ -55,6 +57,9 @@ namespace HotelAvailability
             return hotel.rooms.Where(room => room.roomType == booking.roomType).Count();
         }
 
+        /// <summary>
+        /// Creates Booking type object from text input
+        /// </summary>
         public Booking getBookingFromInput(string input)
         {
             int pom = input.IndexOf('(');
@@ -92,9 +97,6 @@ namespace HotelAvailability
                     return Constants.INVALID_INPUT;
                 }
 
-
-
-                
                 int matchingRooms = countMatchingRooms(booking);
                 if (matchingRooms == 0)
                 {
@@ -149,12 +151,10 @@ namespace HotelAvailability
                 if (input == "") break;
                 string response = app.proccessInput(input);
                 Console.WriteLine(response);
-                //Aval(H1,20240901-20240903,DBL)
             }
 
         }
     }
 
 }
-// See https://aka.ms/new-console-template for more information
 

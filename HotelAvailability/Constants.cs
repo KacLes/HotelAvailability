@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public const string CHECK_AVAILABILITY = "Aval";
+        public const string CHECK_AVAILABILITY = "Availability";
 
         public const string DATE_FORMAT = "yyyyMMdd";
         
